@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ASSIES Clubhouse</title>
+    <meta
+      name="description"
+      content="ASSIES Clubhouseは、フットサル、野球、マラソン、ゴルフ、ダイエットを楽しむ都市型スポーツコミュニティです。"
+    />
+    <style>
+      :root {
+        --ink: #111317;
+        --soft-ink: #2a3038;
+        --muted: #68707b;
+        --mist: #eef3f7;
+        --paper: #fbfaf6;
+        --white: #ffffff;
+        --acid: #c8ff3d;
+        --cyan: #38d7ff;
+        --coral: #ff6f61;
+        --violet: #8f7aff;
+        --steel: #d8e1e7;
+        --line: rgba(17, 19, 23, 0.12);
+        --glass: rgba(255, 255, 255, 0.72);
+        --shadow: 0 24px 80px rgba(17, 19, 23, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo,
+          system-ui, sans-serif;
+        color: var(--ink);
+        background:
+          linear-gradient(120deg, rgba(200, 255, 61, 0.12), transparent 28%),
+          linear-gradient(310deg, rgba(56, 215, 255, 0.16), transparent 34%),
+          var(--paper);
+        line-height: 1.65;
+        letter-spacing: 0;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        opacity: 0.42;
+        background-image:
+          linear-gradient(rgba(17, 19, 23, 0.055) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(17, 19, 23, 0.055) 1px, transparent 1px);
+        background-size: 46px 46px;
+        transform-origin: center;
+        animation: grid-drift 18s linear infinite;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: auto 0 0;
+        z-index: -1;
+        height: 44vh;
+        background: linear-gradient(to top, rgba(17, 19, 23, 0.08), transparent);
+        pointer-events: none;
+      }
+
+      @keyframes grid-drift {
+        from {
+          transform: translateY(0);
+        }
+
+        to {
+          transform: translateY(46px);
+        }
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .site-header {
+        position: fixed;
+        inset: 18px clamp(16px, 4vw, 54px) auto;
+        z-index: 30;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 18px;
+        align-items: center;
+        padding: 10px 12px 10px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        border-radius: 999px;
+        background: rgba(251, 250, 246, 0.76);
+        box-shadow: 0 16px 60px rgba(17, 19, 23, 0.14);
+        backdrop-filter: blur(18px) saturate(1.2);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: max-content;
+        font-weight: 900;
+      }
+
+      .brand-mark {
+        width: 34px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background:
+          linear-gradient(135deg, var(--acid), var(--cyan) 54%, var(--violet));
+        box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.65);
+      }
+
+      .nav {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .nav a {
+        padding: 10px 12px;
+        border-radius: 999px;
+        color: var(--soft-ink);
+      }
+
+      .nav a:hover {
+        background: rgba(17, 19, 23, 0.08);
+      }
+
+      .header-cta,
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 11px 17px;
+        border: 1px solid rgba(17, 19, 23, 0.12);
+        border-radius: 999px;
+        background: var(--ink);
+        color: var(--white);
+        font-weight: 900;
+        line-height: 1.1;
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease,
+          background 180ms ease;
+      }
+
+      .header-cta:hover,
+      .button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 44px rgba(17, 19, 23, 0.18);
+      }
+
+      .button.secondary {
+        background: rgba(255, 255, 255, 0.78);
+        color: var(--ink);
+        backdrop-filter: blur(16px);
+      }
+
+      .hero {
+        position: relative;
+        min-height: 100svh;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(340px, 470px);
+        gap: clamp(28px, 5vw, 74px);
+        align-items: center;
+        width: min(1240px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 128px 0 66px;
+      }
+
+      .hero-media {
+        position: absolute;
+        inset: 116px 0 58px auto;
+        width: min(56vw, 720px);
+        z-index: -1;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .hero-media img {
+        width: 100%;
+        height: 100%;
+        min-height: 560px;
+        object-fit: cover;
+        filter: saturate(1.06) contrast(1.02);
+      }
+
+      .hero-media::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, var(--paper), rgba(251, 250, 246, 0.44) 42%, transparent),
+          linear-gradient(to top, rgba(17, 19, 23, 0.28), transparent 52%);
+      }
+
+      .hero-copy {
+        max-width: 780px;
+      }
+
+      .kicker {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        margin: 0 0 18px;
+        padding: 7px 11px 7px 7px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--soft-ink);
+        font-size: 13px;
+        font-weight: 900;
+        backdrop-filter: blur(16px);
+      }
+
+      .pulse {
+        width: 24px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: var(--acid);
+        box-shadow: 0 0 0 0 rgba(200, 255, 61, 0.72);
+        animation: pulse 1.8s ease-out infinite;
+      }
+
+      @keyframes pulse {
+        to {
+          box-shadow: 0 0 0 16px rgba(200, 255, 61, 0);
+        }
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(54px, 10vw, 132px);
+        line-height: 0.92;
+        letter-spacing: 0;
+      }
+
+      .hero-copy p.lead {
+        width: min(650px, 100%);
+        margin: 26px 0 30px;
+        color: var(--soft-ink);
+        font-size: clamp(17px, 2vw, 21px);
+        font-weight: 700;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .sport-rail {
+        display: grid;
+        gap: 12px;
+      }
+
+      .hud-card {
+        border: 1px solid rgba(255, 255, 255, 0.66);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.68);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(20px) saturate(1.25);
+        overflow: hidden;
+      }
+
+      .hud-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 18px;
+        border-bottom: 1px solid var(--line);
+        font-size: 12px;
+        font-weight: 900;
+        color: var(--muted);
+      }
+
+      .hud-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        background: var(--line);
+      }
+
+      .metric {
+        min-height: 118px;
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .metric span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .metric b {
+        display: block;
+        margin-top: 8px;
+        font-size: clamp(34px, 5vw, 54px);
+        line-height: 1;
+      }
+
+      .metric small {
+        display: block;
+        margin-top: 8px;
+        color: var(--soft-ink);
+        font-weight: 800;
+      }
+
+      .quick-list {
+        display: grid;
+        gap: 8px;
+        padding: 14px;
+      }
+
+      .quick-item {
+        display: grid;
+        grid-template-columns: 12px 1fr auto;
+        gap: 12px;
+        align-items: center;
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: rgba(17, 19, 23, 0.065);
+        font-weight: 900;
+      }
+
+      .dot {
+        width: 12px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: var(--cyan);
+      }
+
+      .quick-item:nth-child(2) .dot {
+        background: var(--coral);
+      }
+
+      .quick-item:nth-child(3) .dot {
+        background: var(--acid);
+      }
+
+      .section {
+        padding: clamp(64px, 9vw, 116px) 16px;
+      }
+
+      .section-inner {
+        width: min(1180px, 100%);
+        margin: 0 auto;
+      }
+
+      .section-head {
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(280px, 0.55fr);
+        gap: 24px;
+        align-items: end;
+        margin-bottom: 30px;
+      }
+
+      .label {
+        margin: 0 0 10px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(34px, 6vw, 70px);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .section-head p {
+        margin: 0;
+        color: var(--soft-ink);
+        font-size: 17px;
+        font-weight: 700;
+      }
+
+      .club-panel {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 0;
+        border: 1px solid rgba(17, 19, 23, 0.1);
+        border-radius: 28px;
+        background: var(--white);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .club-panel img {
+        width: 100%;
+        height: 100%;
+        min-height: 430px;
+        object-fit: cover;
+      }
+
+      .club-copy {
+        display: grid;
+        align-content: center;
+        gap: 22px;
+        padding: clamp(28px, 5vw, 58px);
+      }
+
+      .club-copy p {
+        margin: 0;
+        color: var(--soft-ink);
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+      }
+
+      .tag {
+        padding: 8px 11px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--mist);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .sports-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 14px;
+      }
+
+      .sport-card {
+        position: relative;
+        min-height: 390px;
+        display: grid;
+        align-content: end;
+        padding: 18px;
+        border-radius: 26px;
+        color: var(--white);
+        overflow: hidden;
+        box-shadow: 0 24px 70px rgba(17, 19, 23, 0.18);
+        isolation: isolate;
+      }
+
+      .sport-card img {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 500ms ease;
+      }
+
+      .sport-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background:
+          linear-gradient(to top, rgba(17, 19, 23, 0.82), rgba(17, 19, 23, 0.16) 56%, transparent),
+          linear-gradient(135deg, rgba(200, 255, 61, 0.16), transparent 36%);
+      }
+
+      .sport-card:hover img {
+        transform: scale(1.07);
+      }
+
+      .sport-card h3 {
+        margin: 0 0 8px;
+        font-size: 27px;
+        line-height: 1.05;
+      }
+
+      .sport-card p {
+        margin: 0 0 16px;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .card-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .card-meta span {
+        padding: 7px 9px;
+        border: 1px solid rgba(255, 255, 255, 0.36);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(10px);
+      }
+
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+
+      .event-row {
+        display: grid;
+        grid-template-columns: 150px 1fr auto;
+        gap: 16px;
+        align-items: center;
+        padding: 18px;
+        border: 1px solid rgba(17, 19, 23, 0.12);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 12px 38px rgba(17, 19, 23, 0.09);
+        backdrop-filter: blur(14px);
+      }
+
+      .event-date {
+        color: var(--muted);
+        font-weight: 900;
+      }
+
+      .event-title {
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      .event-status {
+        padding: 9px 12px;
+        border-radius: 999px;
+        background: var(--acid);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .join {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .join-panel {
+        min-height: 430px;
+        display: grid;
+        align-content: center;
+        padding: clamp(30px, 7vw, 78px);
+        border-radius: 32px;
+        color: var(--white);
+        background:
+          linear-gradient(90deg, rgba(17, 19, 23, 0.86), rgba(17, 19, 23, 0.48)),
+          url("https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1800&q=80")
+            center / cover;
+        box-shadow: var(--shadow);
+      }
+
+      .join-panel h2 {
+        max-width: 760px;
+      }
+
+      .join-panel p {
+        max-width: 640px;
+        margin: 22px 0 28px;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .join-panel .button {
+        width: fit-content;
+        background: var(--acid);
+        color: var(--ink);
+      }
+
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 26px 0 36px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(22px);
+        animation: reveal 760ms ease forwards;
+        animation-timeline: view();
+        animation-range: entry 5% cover 28%;
+      }
+
+      @keyframes reveal {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 1ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
+      @media (max-width: 1080px) {
+        .sports-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-media {
+          position: relative;
+          inset: auto;
+          width: 100%;
+          min-height: 360px;
+          order: -1;
+        }
+
+        .sport-rail {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 780px) {
+        .site-header {
+          grid-template-columns: 1fr auto;
+          inset: 12px 12px auto;
+        }
+
+        .nav {
+          display: none;
+        }
+
+        .hero {
+          padding-top: 96px;
+        }
+
+        .hero-media img {
+          min-height: 330px;
+        }
+
+        .section-head,
+        .club-panel,
+        .sport-rail,
+        .event-row {
+          grid-template-columns: 1fr;
+        }
+
+        .sports-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .sport-card {
+          min-height: 330px;
+        }
+
+        footer {
+          flex-direction: column;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header-cta {
+          display: none;
+        }
+
+        h1 {
+          font-size: clamp(48px, 17vw, 78px);
+        }
+
+        .hero-actions .button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#">
+        <span class="brand-mark" aria-hidden="true"></span>
+        ASSIES Clubhouse
+      </a>
+      <nav class="nav" aria-label="メインナビゲーション">
+        <a href="#about">About</a>
+        <a href="#sports">Sports</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#join">Join</a>
+      </nav>
+      <a class="header-cta" href="#join">Entry</a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="kicker"><span class="pulse"></span> Urban sports community</p>
+          <h1>Move as<br />ASSIES.</h1>
+          <p class="lead">
+            フットサル、野球、マラソン、ゴルフ、ダイエット。
+            競技も目的も違うメンバーが、ひとつのクラブハウスに集まる。
+            アッシーズは、熱量をスマートに楽しむスポーツコミュニティです。
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#sports">サークルを見る</a>
+            <a class="button secondary" href="#about">クラブを知る</a>
+          </div>
+        </div>
+
+        <div class="hero-media" aria-hidden="true">
+          <img
+            src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1800&q=82"
+            alt=""
+          />
+        </div>
+
+        <aside class="sport-rail" aria-label="アッシーズの活動ステータス">
+          <div class="hud-card">
+            <div class="hud-top">
+              <span>CLUB STATUS</span>
+              <span>LIVE</span>
+            </div>
+            <div class="hud-grid">
+              <div class="metric">
+                <span>SPORTS</span>
+                <b>05</b>
+                <small>active circles</small>
+              </div>
+              <div class="metric">
+                <span>MOOD</span>
+                <b>HIGH</b>
+                <small>serious fun</small>
+              </div>
+            </div>
+          </div>
+          <div class="hud-card">
+            <div class="hud-top">
+              <span>NEXT ACTION</span>
+              <span>THIS WEEK</span>
+            </div>
+            <div class="quick-list">
+              <div class="quick-item">
+                <span class="dot"></span>
+                <span>フットサル</span>
+                <span>Open</span>
+              </div>
+              <div class="quick-item">
+                <span class="dot"></span>
+                <span>朝ラン</span>
+                <span>Open</span>
+              </div>
+              <div class="quick-item">
+                <span class="dot"></span>
+                <span>野球</span>
+                <span>Scout</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section reveal" id="about">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <p class="label">About ASSIES</p>
+              <h2>遊びじゃない。けど、遊び心は忘れない。</h2>
+            </div>
+            <p>
+              アッシーズは、スポーツを通じて日常のテンションを上げるための母体です。
+              初心者も経験者も、勝ちたい人も健康目的の人も、自分に合う入り口から参加できます。
+            </p>
+          </div>
+
+          <div class="club-panel">
+            <img
+              src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1400&q=82"
+              alt="スポーツコートでプレーに向かうメンバー"
+            />
+            <div class="club-copy">
+              <h2>ASSIES Clubhouse</h2>
+              <p>
+                種目ごとに分かれながら、クラブとしてはひとつ。
+                参加予定、募集、活動レポートをまとめ、メンバーが次のアクションを選びやすい場所を目指します。
+              </p>
+              <div class="tags" aria-label="クラブの特徴">
+                <span class="tag">Weekend sports</span>
+                <span class="tag">Beginner friendly</span>
+                <span class="tag">Social training</span>
+                <span class="tag">City league mood</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="sports">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <p class="label">Choose your circle</p>
+              <h2>今日は、どのフィールドへ？</h2>
+            </div>
+            <p>
+              気分、予定、体力に合わせて選べる5つの活動。ひとつに絞らなくても、横断して楽しめます。
+            </p>
+          </div>
+
+          <div class="sports-grid">
+            <article class="sport-card">
+              <img
+                src="https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=900&q=82"
+                alt="フットサルボールとコート"
+              />
+              <h3>Futsal</h3>
+              <p>短時間で熱くなれる、アッシーズの入口。</p>
+              <div class="card-meta"><span>Speed</span><span>Open</span></div>
+            </article>
+            <article class="sport-card">
+              <img
+                src="https://images.unsplash.com/photo-1508344928928-7165b67de128?auto=format&fit=crop&w=900&q=82"
+                alt="野球グラウンド"
+              />
+              <h3>Baseball</h3>
+              <p>試合、練習、キャッチボールまで幅広く。</p>
+              <div class="card-meta"><span>Team</span><span>Scout</span></div>
+            </article>
+            <article class="sport-card">
+              <img
+                src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=900&q=82"
+                alt="ランニング中の足元"
+              />
+              <h3>Running</h3>
+              <p>朝ランから大会参加まで、自分のペースで。</p>
+              <div class="card-meta"><span>Endurance</span><span>Open</span></div>
+            </article>
+            <article class="sport-card">
+              <img
+                src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=900&q=82"
+                alt="ゴルフコース"
+              />
+              <h3>Golf</h3>
+              <p>集中と会話を楽しむ、大人のラウンド。</p>
+              <div class="card-meta"><span>Focus</span><span>Join</span></div>
+            </article>
+            <article class="sport-card">
+              <img
+                src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=82"
+                alt="トレーニングスタジオ"
+              />
+              <h3>Diet</h3>
+              <p>続けることをゲーム化する健康サークル。</p>
+              <div class="card-meta"><span>Habit</span><span>Start</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="schedule">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <p class="label">Live schedule</p>
+              <h2>次の予定が、すぐ見える。</h2>
+            </div>
+            <p>
+              公開後はここに実際の開催日、場所、募集状況を入れていく想定です。
+            </p>
+          </div>
+
+          <div class="timeline">
+            <div class="event-row">
+              <div class="event-date">Sat / 19:00</div>
+              <div class="event-title">週末フットサルセッション</div>
+              <div class="event-status">参加受付中</div>
+            </div>
+            <div class="event-row">
+              <div class="event-date">Sun / 07:30</div>
+              <div class="event-title">朝ラン 5km チャレンジ</div>
+              <div class="event-status">初参加歓迎</div>
+            </div>
+            <div class="event-row">
+              <div class="event-date">Next Month</div>
+              <div class="event-title">ゴルフ練習会 & ラウンド企画</div>
+              <div class="event-status">調整中</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section join reveal" id="join">
+        <div class="section-inner">
+          <div class="join-panel">
+            <p class="label">Join ASSIES</p>
+            <h2>運動したい気持ちを、予定に変えよう。</h2>
+            <p>
+              まずは気になる種目をひとつ選ぶだけ。経験値より、参加してみる一歩を歓迎します。
+            </p>
+            <a class="button" href="mailto:hello@example.com">参加について聞く</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>&copy; 2026 ASSIES Clubhouse</span>
+      <span>Futsal / Baseball / Running / Golf / Diet</span>
+    </footer>
+  </body>
+</html>
