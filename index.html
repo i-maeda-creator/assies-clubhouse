@@ -461,6 +461,7 @@
         overflow: hidden;
         box-shadow: 0 24px 70px rgba(17, 19, 23, 0.18);
         isolation: isolate;
+        cursor: pointer;
       }
 
       .sport-card img {
@@ -485,6 +486,15 @@
 
       .sport-card:hover img {
         transform: scale(1.07);
+      }
+
+      .sport-card:hover {
+        transform: translateY(-4px);
+      }
+
+      .sport-card:focus-visible {
+        outline: 3px solid var(--acid);
+        outline-offset: 4px;
       }
 
       .sport-card h3 {
@@ -832,7 +842,7 @@
           </div>
 
           <div class="sports-grid">
-            <article class="sport-card">
+            <a class="sport-card" href="futsal.html">
               <img
                 src="https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=900&q=82"
                 alt="フットサルボールとコート"
@@ -840,8 +850,8 @@
               <h3>Futsal</h3>
               <p>短時間で熱くなれる、アッシーズの入口。</p>
               <div class="card-meta"><span>Speed</span><span>Open</span></div>
-            </article>
-            <article class="sport-card">
+            </a>
+            <a class="sport-card" href="baseball.html">
               <img
                 src="https://images.unsplash.com/photo-1508344928928-7165b67de128?auto=format&fit=crop&w=900&q=82"
                 alt="野球グラウンド"
@@ -849,8 +859,8 @@
               <h3>Baseball</h3>
               <p>試合、練習、キャッチボールまで幅広く。</p>
               <div class="card-meta"><span>Team</span><span>Scout</span></div>
-            </article>
-            <article class="sport-card">
+            </a>
+            <a class="sport-card" href="running.html">
               <img
                 src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=900&q=82"
                 alt="ランニング中の足元"
@@ -858,8 +868,8 @@
               <h3>Running</h3>
               <p>朝ランから大会参加まで、自分のペースで。</p>
               <div class="card-meta"><span>Endurance</span><span>Open</span></div>
-            </article>
-            <article class="sport-card">
+            </a>
+            <a class="sport-card" href="golf.html">
               <img
                 src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=900&q=82"
                 alt="ゴルフコース"
@@ -867,8 +877,8 @@
               <h3>Golf</h3>
               <p>集中と会話を楽しむ、大人のラウンド。</p>
               <div class="card-meta"><span>Focus</span><span>Join</span></div>
-            </article>
-            <article class="sport-card">
+            </a>
+            <a class="sport-card" href="diet.html">
               <img
                 src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=82"
                 alt="トレーニングスタジオ"
@@ -876,7 +886,7 @@
               <h3>Diet</h3>
               <p>続けることをゲーム化する健康サークル。</p>
               <div class="card-meta"><span>Habit</span><span>Start</span></div>
-            </article>
+            </a>
           </div>
         </div>
       </section>
