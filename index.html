@@ -3,722 +3,746 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ASSIES Clubhouse</title>
-    <meta
-      name="description"
-      content="ASSIES Clubhouseは、フットサル、野球、マラソン、ゴルフ、ダイエットを楽しむ都市型スポーツコミュニティです。"
-    />
+    <title>ASSIES Clubhouse — Urban Sports Community</title>
+    <meta name="description" content="フットサル、野球、マラソン、ゴルフ、ダイエット。競技も目的も違うメンバーが、ひとつのクラブハウスに集まる都市型スポーツコミュニティ。" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet" />
     <style>
+      /* ── Design Tokens ─────────────────────────────── */
       :root {
-        --ink: #111317;
-        --soft-ink: #2a3038;
-        --muted: #68707b;
-        --mist: #eef3f7;
-        --paper: #fbfaf6;
-        --white: #ffffff;
-        --acid: #c8ff3d;
-        --cyan: #38d7ff;
-        --coral: #ff6f61;
-        --violet: #8f7aff;
-        --steel: #d8e1e7;
-        --line: rgba(17, 19, 23, 0.12);
-        --glass: rgba(255, 255, 255, 0.72);
-        --shadow: 0 24px 80px rgba(17, 19, 23, 0.16);
+        --bg:      #070709;
+        --bg2:     #0e0f11;
+        --ink:     #f0ede8;
+        --muted:   rgba(240, 237, 232, 0.46);
+        --line:    rgba(240, 237, 232, 0.1);
+        --acid:    #c8ff3d;
+        --cyan:    #38d7ff;
+        --coral:   #ff6f61;
+        --violet:  #8f7aff;
+        --amber:   #ffb830;
+        --shadow:  0 40px 120px rgba(0, 0, 0, 0.7);
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
       body {
-        margin: 0;
-        font-family: "Inter", "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo,
-          system-ui, sans-serif;
+        background: var(--bg);
         color: var(--ink);
-        background:
-          linear-gradient(120deg, rgba(200, 255, 61, 0.12), transparent 28%),
-          linear-gradient(310deg, rgba(56, 215, 255, 0.16), transparent 34%),
-          var(--paper);
-        line-height: 1.65;
-        letter-spacing: 0;
+        font-family: "Inter", "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, system-ui, sans-serif;
+        overflow-x: hidden;
+        line-height: 1.6;
       }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; }
 
-      body::before {
-        content: "";
+      /* ── Loader ────────────────────────────────────── */
+      #loader {
         position: fixed;
         inset: 0;
-        z-index: -2;
-        opacity: 0.42;
-        background-image:
-          linear-gradient(rgba(17, 19, 23, 0.055) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(17, 19, 23, 0.055) 1px, transparent 1px);
-        background-size: 46px 46px;
-        transform-origin: center;
-        animation: grid-drift 18s linear infinite;
+        z-index: 9999;
+        background: var(--bg);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        transition: opacity 700ms ease 200ms, visibility 700ms ease 200ms;
+      }
+      #loader.hidden { opacity: 0; visibility: hidden; }
+
+      .loader-letters {
+        display: flex;
+        gap: 0.04em;
+        font-size: clamp(44px, 14vw, 110px);
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        overflow: hidden;
+      }
+      .loader-letters span {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(110%);
+        animation: char-rise 460ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+      .loader-letters span:nth-child(1) { animation-delay: 80ms; }
+      .loader-letters span:nth-child(2) { animation-delay: 160ms; }
+      .loader-letters span:nth-child(3) { animation-delay: 230ms; }
+      .loader-letters span:nth-child(4) { animation-delay: 300ms; }
+      .loader-letters span:nth-child(5) { animation-delay: 370ms; }
+      .loader-letters span:nth-child(6) { animation-delay: 440ms; color: var(--acid); }
+      @keyframes char-rise {
+        to { opacity: 1; transform: translateY(0); }
       }
 
-      body::after {
-        content: "";
-        position: fixed;
-        inset: auto 0 0;
-        z-index: -1;
-        height: 44vh;
-        background: linear-gradient(to top, rgba(17, 19, 23, 0.08), transparent);
-        pointer-events: none;
+      .loader-bar-wrap {
+        width: min(320px, 60vw);
+        height: 2px;
+        background: rgba(240, 237, 232, 0.12);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .loader-bar {
+        height: 100%;
+        background: var(--acid);
+        border-radius: 99px;
+        animation: bar-fill 1800ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        animation-delay: 200ms;
+        transform-origin: left;
+        transform: scaleX(0);
+      }
+      @keyframes bar-fill {
+        to { transform: scaleX(1); }
       }
 
-      @keyframes grid-drift {
-        from {
-          transform: translateY(0);
-        }
-
-        to {
-          transform: translateY(46px);
-        }
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      img {
-        display: block;
-        max-width: 100%;
-      }
-
+      /* ── Header ────────────────────────────────────── */
       .site-header {
         position: fixed;
         inset: 18px clamp(16px, 4vw, 54px) auto;
-        z-index: 30;
+        z-index: 200;
         display: grid;
         grid-template-columns: auto 1fr auto;
-        gap: 18px;
+        gap: 12px;
         align-items: center;
-        padding: 10px 12px 10px 18px;
-        border: 1px solid rgba(255, 255, 255, 0.55);
+        padding: 9px 12px 9px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 999px;
-        background: rgba(251, 250, 246, 0.76);
-        box-shadow: 0 16px 60px rgba(17, 19, 23, 0.14);
-        backdrop-filter: blur(18px) saturate(1.2);
+        background: rgba(7, 7, 9, 0.78);
+        backdrop-filter: blur(22px) saturate(1.5);
+        box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
       }
-
       .brand {
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        min-width: max-content;
         font-weight: 900;
+        font-size: 14px;
+        letter-spacing: 0.02em;
       }
-
       .brand-mark {
-        width: 34px;
+        width: 30px;
         aspect-ratio: 1;
         border-radius: 50%;
-        background:
-          linear-gradient(135deg, var(--acid), var(--cyan) 54%, var(--violet));
-        box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.65);
+        background: linear-gradient(135deg, var(--acid), var(--cyan) 54%, var(--violet));
+        box-shadow: inset 0 0 0 5px rgba(0, 0, 0, 0.35);
+        flex-shrink: 0;
       }
-
       .nav {
         display: flex;
         justify-content: center;
-        gap: 6px;
+        gap: 2px;
         font-size: 13px;
         font-weight: 800;
       }
-
       .nav a {
-        padding: 10px 12px;
+        padding: 8px 12px;
         border-radius: 999px;
-        color: var(--soft-ink);
+        color: var(--muted);
+        transition: color 160ms, background 160ms;
       }
-
-      .nav a:hover {
-        background: rgba(17, 19, 23, 0.08);
-      }
-
-      .header-cta,
-      .button {
+      .nav a:hover { color: var(--ink); background: rgba(255, 255, 255, 0.08); }
+      .header-cta {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 44px;
-        padding: 11px 17px;
-        border: 1px solid rgba(17, 19, 23, 0.12);
+        min-height: 38px;
+        padding: 8px 16px;
         border-radius: 999px;
-        background: var(--ink);
-        color: var(--white);
+        background: var(--acid);
+        color: #070709;
         font-weight: 900;
-        line-height: 1.1;
-        transition:
-          transform 180ms ease,
-          box-shadow 180ms ease,
-          background 180ms ease;
+        font-size: 13px;
+        transition: transform 160ms, box-shadow 160ms;
       }
-
-      .header-cta:hover,
-      .button:hover {
+      .header-cta:hover {
         transform: translateY(-2px);
-        box-shadow: 0 16px 44px rgba(17, 19, 23, 0.18);
+        box-shadow: 0 0 28px rgba(200, 255, 61, 0.44);
       }
 
-      .button.secondary {
-        background: rgba(255, 255, 255, 0.78);
-        color: var(--ink);
-        backdrop-filter: blur(16px);
-      }
-
+      /* ── Hero ──────────────────────────────────────── */
       .hero {
         position: relative;
         min-height: 100svh;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(340px, 470px);
-        gap: clamp(28px, 5vw, 74px);
-        align-items: center;
-        width: min(1240px, calc(100% - 32px));
-        margin: 0 auto;
-        padding: 128px 0 66px;
-      }
-
-      .hero-media {
-        position: absolute;
-        inset: 116px 0 58px auto;
-        width: min(56vw, 720px);
-        z-index: -1;
-        border-radius: 28px;
+        align-items: end;
+        padding: 0 clamp(20px, 5vw, 80px) clamp(48px, 8vh, 80px);
         overflow: hidden;
-        box-shadow: var(--shadow);
       }
-
-      .hero-media img {
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+      }
+      .hero-bg img {
         width: 100%;
         height: 100%;
-        min-height: 560px;
         object-fit: cover;
-        filter: saturate(1.06) contrast(1.02);
+        filter: saturate(0.72);
+        scale: 1.1;
+        animation: hero-parallax linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 100vh;
       }
-
-      .hero-media::after {
+      @keyframes hero-parallax {
+        to { transform: translateY(10%); }
+      }
+      .hero-bg::after {
         content: "";
         position: absolute;
         inset: 0;
         background:
-          linear-gradient(90deg, var(--paper), rgba(251, 250, 246, 0.44) 42%, transparent),
-          linear-gradient(to top, rgba(17, 19, 23, 0.28), transparent 52%);
+          linear-gradient(to top, rgba(7, 7, 9, 0.97) 0%, rgba(7, 7, 9, 0.36) 56%, rgba(7, 7, 9, 0.62) 100%),
+          linear-gradient(140deg, rgba(200, 255, 61, 0.1), transparent 44%);
       }
 
-      .hero-copy {
-        max-width: 780px;
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 1440px;
+        width: 100%;
       }
-
-      .kicker {
+      .hero-kicker {
         display: inline-flex;
+        align-items: center;
         gap: 10px;
-        align-items: center;
-        margin: 0 0 18px;
-        padding: 7px 11px 7px 7px;
-        border: 1px solid var(--line);
+        margin-bottom: 22px;
+        padding: 6px 14px 6px 6px;
+        border: 1px solid rgba(200, 255, 61, 0.28);
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.72);
-        color: var(--soft-ink);
-        font-size: 13px;
-        font-weight: 900;
-        backdrop-filter: blur(16px);
-      }
-
-      .pulse {
-        width: 24px;
-        aspect-ratio: 1;
-        border-radius: 50%;
-        background: var(--acid);
-        box-shadow: 0 0 0 0 rgba(200, 255, 61, 0.72);
-        animation: pulse 1.8s ease-out infinite;
-      }
-
-      @keyframes pulse {
-        to {
-          box-shadow: 0 0 0 16px rgba(200, 255, 61, 0);
-        }
-      }
-
-      h1 {
-        margin: 0;
-        font-size: clamp(54px, 10vw, 132px);
-        line-height: 0.92;
-        letter-spacing: 0;
-      }
-
-      .hero-copy p.lead {
-        width: min(650px, 100%);
-        margin: 26px 0 30px;
-        color: var(--soft-ink);
-        font-size: clamp(17px, 2vw, 21px);
-        font-weight: 700;
-      }
-
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-      }
-
-      .sport-rail {
-        display: grid;
-        gap: 12px;
-      }
-
-      .hud-card {
-        border: 1px solid rgba(255, 255, 255, 0.66);
-        border-radius: 24px;
-        background: rgba(255, 255, 255, 0.68);
-        box-shadow: var(--shadow);
-        backdrop-filter: blur(20px) saturate(1.25);
-        overflow: hidden;
-      }
-
-      .hud-top {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 18px;
-        border-bottom: 1px solid var(--line);
+        background: rgba(200, 255, 61, 0.1);
+        color: var(--acid);
         font-size: 12px;
-        font-weight: 900;
-        color: var(--muted);
-      }
-
-      .hud-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1px;
-        background: var(--line);
-      }
-
-      .metric {
-        min-height: 118px;
-        padding: 18px;
-        background: rgba(255, 255, 255, 0.72);
-      }
-
-      .metric span {
-        display: block;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 900;
-      }
-
-      .metric b {
-        display: block;
-        margin-top: 8px;
-        font-size: clamp(34px, 5vw, 54px);
-        line-height: 1;
-      }
-
-      .metric small {
-        display: block;
-        margin-top: 8px;
-        color: var(--soft-ink);
-        font-weight: 800;
-      }
-
-      .quick-list {
-        display: grid;
-        gap: 8px;
-        padding: 14px;
-      }
-
-      .quick-item {
-        display: grid;
-        grid-template-columns: 12px 1fr auto;
-        gap: 12px;
-        align-items: center;
-        padding: 12px 14px;
-        border-radius: 16px;
-        background: rgba(17, 19, 23, 0.065);
-        font-weight: 900;
-      }
-
-      .dot {
-        width: 12px;
-        aspect-ratio: 1;
-        border-radius: 50%;
-        background: var(--cyan);
-      }
-
-      .quick-item:nth-child(2) .dot {
-        background: var(--coral);
-      }
-
-      .quick-item:nth-child(3) .dot {
-        background: var(--acid);
-      }
-
-      .section {
-        padding: clamp(64px, 9vw, 116px) 16px;
-      }
-
-      .section-inner {
-        width: min(1180px, 100%);
-        margin: 0 auto;
-      }
-
-      .section-head {
-        display: grid;
-        grid-template-columns: minmax(0, 0.8fr) minmax(280px, 0.55fr);
-        gap: 24px;
-        align-items: end;
-        margin-bottom: 30px;
-      }
-
-      .label {
-        margin: 0 0 10px;
-        color: var(--muted);
-        font-size: 13px;
         font-weight: 900;
         text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .pulse {
+        width: 20px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: var(--acid);
+        animation: pulse 1.9s ease-out infinite;
+      }
+      @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(200, 255, 61, 0.7); }
+        70% { box-shadow: 0 0 0 14px rgba(200, 255, 61, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(200, 255, 61, 0); }
       }
 
-      h2 {
-        margin: 0;
-        font-size: clamp(34px, 6vw, 70px);
-        line-height: 1;
-        letter-spacing: 0;
+      .hero h1 {
+        font-size: clamp(72px, 17vw, 230px);
+        font-weight: 900;
+        line-height: 0.88;
+        letter-spacing: -0.045em;
+      }
+      .hero h1 em {
+        font-style: normal;
+        color: var(--acid);
       }
 
-      .section-head p {
-        margin: 0;
-        color: var(--soft-ink);
-        font-size: 17px;
-        font-weight: 700;
-      }
-
-      .club-panel {
-        display: grid;
-        grid-template-columns: 0.95fr 1.05fr;
-        gap: 0;
-        border: 1px solid rgba(17, 19, 23, 0.1);
-        border-radius: 28px;
-        background: var(--white);
-        box-shadow: var(--shadow);
-        overflow: hidden;
-      }
-
-      .club-panel img {
-        width: 100%;
-        height: 100%;
-        min-height: 430px;
-        object-fit: cover;
-      }
-
-      .club-copy {
-        display: grid;
-        align-content: center;
-        gap: 22px;
-        padding: clamp(28px, 5vw, 58px);
-      }
-
-      .club-copy p {
-        margin: 0;
-        color: var(--soft-ink);
-        font-size: 18px;
-        font-weight: 700;
-      }
-
-      .tags {
+      .hero-sub {
         display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 28px;
+        margin-top: clamp(28px, 4.5vh, 52px);
         flex-wrap: wrap;
-        gap: 9px;
+      }
+      .hero-tagline {
+        font-size: clamp(14px, 1.8vw, 20px);
+        font-weight: 700;
+        color: var(--muted);
+        max-width: 500px;
+        line-height: 1.72;
+      }
+      .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 50px;
+        padding: 12px 22px;
+        border-radius: 999px;
+        font-weight: 900;
+        font-size: 14px;
+        transition: transform 180ms, box-shadow 180ms, background 180ms;
+      }
+      .btn:hover { transform: translateY(-3px); }
+      .btn-primary {
+        background: var(--acid);
+        color: #070709;
+      }
+      .btn-primary:hover { box-shadow: 0 0 36px rgba(200, 255, 61, 0.48); }
+      .btn-ghost {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: var(--ink);
+      }
+      .btn-ghost:hover { background: rgba(255, 255, 255, 0.08); }
+
+      .scroll-hint {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+      .scroll-line {
+        width: 1px;
+        height: 54px;
+        background: linear-gradient(to bottom, var(--acid), transparent);
+        animation: scroll-breathe 2s ease-in-out infinite;
+      }
+      @keyframes scroll-breathe {
+        0%, 100% { opacity: 0.25; transform: scaleY(0.55); transform-origin: top; }
+        50% { opacity: 1; transform: scaleY(1); }
       }
 
-      .tag {
-        padding: 8px 11px;
+      /* ── Marquee ───────────────────────────────────── */
+      .marquee-wrap {
+        overflow: hidden;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        padding: 16px 0;
+        background: var(--bg2);
+      }
+      .marquee-track {
+        display: flex;
+        white-space: nowrap;
+        animation: marquee-scroll 22s linear infinite;
+      }
+      .marquee-track:hover { animation-play-state: paused; }
+      @keyframes marquee-scroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+      .marquee-item {
+        display: inline-flex;
+        align-items: center;
+        padding: 0 20px;
+        gap: 16px;
+        font-size: clamp(13px, 1.8vw, 17px);
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--muted);
+      }
+      .marquee-item b { color: var(--acid); font-weight: 900; }
+      .marquee-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--acid);
+        opacity: 0.6;
+        flex-shrink: 0;
+      }
+
+      /* ── Manifesto ─────────────────────────────────── */
+      .manifesto {
+        padding: clamp(90px, 15vw, 200px) clamp(20px, 6vw, 80px);
+        border-bottom: 1px solid var(--line);
+      }
+      .manifesto-quote {
+        font-size: clamp(38px, 8.5vw, 118px);
+        font-weight: 900;
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+        opacity: 0;
+        animation: fade-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation-timeline: view();
+        animation-range: entry 5% cover 35%;
+      }
+      .manifesto-quote em {
+        font-style: normal;
+        color: var(--acid);
+      }
+      .manifesto-sub {
+        margin-top: 36px;
+        max-width: 640px;
+        font-size: clamp(15px, 1.9vw, 20px);
+        font-weight: 700;
+        color: var(--muted);
+        line-height: 1.72;
+        opacity: 0;
+        animation: fade-up 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation-timeline: view();
+        animation-range: entry 12% cover 42%;
+      }
+      @keyframes fade-up {
+        from { opacity: 0; transform: translateY(44px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* ── Sports List ───────────────────────────────── */
+      .sports-section { padding-bottom: clamp(60px, 9vw, 120px); }
+
+      .sports-headline {
+        padding: clamp(80px, 12vw, 160px) clamp(20px, 6vw, 80px) clamp(50px, 7vw, 80px);
+        display: flex;
+        align-items: baseline;
+        gap: 28px;
+        flex-wrap: wrap;
+      }
+      .sports-headline h2 {
+        font-size: clamp(46px, 9vw, 116px);
+        font-weight: 900;
+        line-height: 0.9;
+        letter-spacing: -0.045em;
+      }
+      .sports-headline .count-tag {
+        padding: 8px 14px;
         border: 1px solid var(--line);
         border-radius: 999px;
-        background: var(--mist);
         font-size: 13px;
         font-weight: 900;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        white-space: nowrap;
       }
 
-      .sports-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 14px;
-      }
-
-      .sport-card {
+      .sport-row {
         position: relative;
-        min-height: 390px;
         display: grid;
-        align-content: end;
-        padding: 18px;
-        border-radius: 26px;
-        color: var(--white);
+        grid-template-columns: clamp(70px, 11vw, 160px) 1fr auto;
+        align-items: center;
+        gap: 0;
+        padding: clamp(20px, 3.2vw, 40px) clamp(20px, 5vw, 72px);
+        border-top: 1px solid var(--line);
+        background: var(--bg2);
+        color: var(--ink);
         overflow: hidden;
-        box-shadow: 0 24px 70px rgba(17, 19, 23, 0.18);
-        isolation: isolate;
+        transition: background 300ms;
         cursor: pointer;
       }
+      .sport-row:last-of-type { border-bottom: 1px solid var(--line); }
+      .sport-row:hover { background: #14151a; }
 
-      .sport-card img {
+      .sport-row-bg {
         position: absolute;
         inset: 0;
-        z-index: -2;
+        z-index: 0;
+        opacity: 0;
+        transition: opacity 500ms ease;
+      }
+      .sport-row-bg img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 500ms ease;
+        transition: transform 700ms ease;
+        filter: saturate(0.8);
       }
-
-      .sport-card::after {
+      .sport-row-bg::after {
         content: "";
         position: absolute;
         inset: 0;
-        z-index: -1;
         background:
-          linear-gradient(to top, rgba(17, 19, 23, 0.82), rgba(17, 19, 23, 0.16) 56%, transparent),
-          linear-gradient(135deg, rgba(200, 255, 61, 0.16), transparent 36%);
+          linear-gradient(90deg, rgba(7, 7, 9, 0.95) 0%, rgba(7, 7, 9, 0.7) 55%, rgba(7, 7, 9, 0.3) 100%);
       }
+      .sport-row:hover .sport-row-bg { opacity: 1; }
+      .sport-row:hover .sport-row-bg img { transform: scale(1.06); }
 
-      .sport-card:hover img {
-        transform: scale(1.07);
+      .sport-num {
+        position: relative;
+        z-index: 1;
+        font-size: clamp(11px, 1.4vw, 15px);
+        font-weight: 900;
+        color: var(--muted);
+        letter-spacing: 0.1em;
       }
-
-      .sport-card:hover {
-        transform: translateY(-4px);
+      .sport-name {
+        position: relative;
+        z-index: 1;
+        font-size: clamp(40px, 7.5vw, 104px);
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        transition: color 280ms ease;
       }
+      .sport-row:hover .sport-name { color: var(--sport-color, var(--acid)); }
 
-      .sport-card:focus-visible {
-        outline: 3px solid var(--acid);
-        outline-offset: 4px;
-      }
-
-      .sport-card h3 {
-        margin: 0 0 8px;
-        font-size: 27px;
-        line-height: 1.05;
-      }
-
-      .sport-card p {
-        margin: 0 0 16px;
-        color: rgba(255, 255, 255, 0.82);
-        font-size: 14px;
-        font-weight: 800;
-      }
-
-      .card-meta {
+      .sport-row-right {
+        position: relative;
+        z-index: 1;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        align-items: flex-end;
         gap: 10px;
+      }
+      .sport-tag {
+        padding: 7px 13px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
         font-size: 12px;
         font-weight: 900;
+        color: var(--muted);
+        opacity: 0;
+        transform: translateX(12px);
+        transition: opacity 280ms, transform 280ms;
+        white-space: nowrap;
+      }
+      .sport-row:hover .sport-tag {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      .sport-arrow {
+        font-size: clamp(20px, 3.5vw, 44px);
+        font-weight: 900;
+        color: var(--sport-color, var(--acid));
+        opacity: 0;
+        transform: translateX(-14px);
+        transition: opacity 280ms, transform 280ms;
+      }
+      .sport-row:hover .sport-arrow {
+        opacity: 1;
+        transform: translateX(0);
       }
 
-      .card-meta span {
-        padding: 7px 9px;
-        border: 1px solid rgba(255, 255, 255, 0.36);
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.16);
-        backdrop-filter: blur(10px);
+      /* ── Stats ─────────────────────────────────────── */
+      .stats-section {
+        padding: clamp(80px, 12vw, 160px) clamp(20px, 6vw, 80px);
+        border-top: 1px solid var(--line);
       }
-
-      .timeline {
+      .stats-grid {
         display: grid;
-        gap: 12px;
+        grid-template-columns: repeat(4, 1fr);
+        background: var(--line);
+        gap: 1px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        overflow: hidden;
+        opacity: 0;
+        animation: fade-up 900ms ease forwards;
+        animation-timeline: view();
+        animation-range: entry 8% cover 36%;
+      }
+      .stat-cell {
+        background: var(--bg2);
+        padding: clamp(28px, 5vw, 56px) clamp(22px, 4vw, 48px);
+      }
+      .stat-num {
+        display: block;
+        font-size: clamp(54px, 8.5vw, 100px);
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        color: var(--acid);
+      }
+      .stat-label {
+        display: block;
+        margin-top: 12px;
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
       }
 
+      /* ── Schedule ──────────────────────────────────── */
+      .schedule-section {
+        padding: clamp(80px, 12vw, 160px) clamp(20px, 6vw, 80px);
+        border-top: 1px solid var(--line);
+      }
+      .section-eyebrow {
+        display: block;
+        margin-bottom: 16px;
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+      }
+      .section-title {
+        font-size: clamp(38px, 6.5vw, 80px);
+        font-weight: 900;
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+        margin-bottom: clamp(40px, 6vw, 68px);
+      }
+
+      .timeline { display: grid; }
       .event-row {
         display: grid;
-        grid-template-columns: 150px 1fr auto;
-        gap: 16px;
+        grid-template-columns: clamp(120px, 17vw, 210px) 1fr auto;
+        gap: 20px;
         align-items: center;
-        padding: 18px;
-        border: 1px solid rgba(17, 19, 23, 0.12);
-        border-radius: 22px;
-        background: rgba(255, 255, 255, 0.72);
-        box-shadow: 0 12px 38px rgba(17, 19, 23, 0.09);
-        backdrop-filter: blur(14px);
+        padding: clamp(18px, 2.8vw, 26px) 0;
+        border-top: 1px solid var(--line);
+        opacity: 0;
+        animation: fade-up 700ms ease forwards;
+        animation-timeline: view();
+        animation-range: entry 6% cover 30%;
       }
-
+      .event-row:last-child { border-bottom: 1px solid var(--line); }
       .event-date {
+        font-size: clamp(11px, 1.5vw, 15px);
+        font-weight: 900;
         color: var(--muted);
-        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
       }
-
-      .event-title {
-        font-size: 20px;
+      .event-name {
+        font-size: clamp(17px, 2.8vw, 26px);
         font-weight: 900;
+        letter-spacing: -0.02em;
       }
-
-      .event-status {
-        padding: 9px 12px;
+      .event-badge {
+        padding: 9px 15px;
         border-radius: 999px;
         background: var(--acid);
-        font-size: 13px;
+        color: #070709;
+        font-size: 12px;
         font-weight: 900;
+        white-space: nowrap;
+      }
+      .event-badge.pending {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--muted);
       }
 
-      .join {
-        position: relative;
-        overflow: hidden;
+      /* ── Join ──────────────────────────────────────── */
+      .join-section {
+        padding: clamp(60px, 9vw, 120px) clamp(20px, 6vw, 80px);
       }
-
       .join-panel {
-        min-height: 430px;
+        position: relative;
+        min-height: clamp(380px, 52vw, 580px);
         display: grid;
         align-content: center;
-        padding: clamp(30px, 7vw, 78px);
-        border-radius: 32px;
-        color: var(--white);
+        padding: clamp(44px, 7vw, 88px);
+        border-radius: 36px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        opacity: 0;
+        animation: fade-up 1s ease forwards;
+        animation-timeline: view();
+        animation-range: entry 5% cover 40%;
+      }
+      .join-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+      }
+      .join-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.22;
+        filter: saturate(0.5);
+      }
+      .join-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
         background:
-          linear-gradient(90deg, rgba(17, 19, 23, 0.86), rgba(17, 19, 23, 0.48)),
-          url("https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1800&q=80")
-            center / cover;
-        box-shadow: var(--shadow);
+          radial-gradient(ellipse at 75% 50%, rgba(200, 255, 61, 0.2), transparent 55%),
+          linear-gradient(135deg, rgba(7, 7, 9, 0.82), rgba(7, 7, 9, 0.44));
       }
-
-      .join-panel h2 {
-        max-width: 760px;
+      .join-content {
+        position: relative;
+        z-index: 1;
+        max-width: 780px;
       }
-
-      .join-panel p {
-        max-width: 640px;
-        margin: 22px 0 28px;
-        color: rgba(255, 255, 255, 0.82);
-        font-size: 18px;
+      .join-content h2 {
+        font-size: clamp(42px, 7.5vw, 96px);
+        font-weight: 900;
+        line-height: 0.94;
+        letter-spacing: -0.04em;
+      }
+      .join-content p {
+        margin: 24px 0 38px;
+        font-size: clamp(15px, 1.9vw, 20px);
         font-weight: 700;
+        color: var(--muted);
+        line-height: 1.72;
       }
 
-      .join-panel .button {
-        width: fit-content;
-        background: var(--acid);
-        color: var(--ink);
-      }
-
+      /* ── Footer ────────────────────────────────────── */
       footer {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         gap: 18px;
-        width: min(1180px, calc(100% - 32px));
+        width: min(1200px, calc(100% - 40px));
         margin: 0 auto;
-        padding: 26px 0 36px;
+        padding: 28px 0 44px;
+        border-top: 1px solid var(--line);
         color: var(--muted);
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 800;
       }
-
-      .reveal {
-        opacity: 0;
-        transform: translateY(22px);
-        animation: reveal 760ms ease forwards;
-        animation-timeline: view();
-        animation-range: entry 5% cover 28%;
+      .footer-sports {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
       }
-
-      @keyframes reveal {
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+      .footer-sports a {
+        color: var(--muted);
+        transition: color 160ms;
+        font-weight: 900;
       }
+      .footer-sports a:hover { color: var(--ink); }
 
-      @media (prefers-reduced-motion: reduce) {
-        *,
-        *::before,
-        *::after {
-          animation-duration: 1ms !important;
-          animation-iteration-count: 1 !important;
-          scroll-behavior: auto !important;
-        }
+      /* ── Responsive ────────────────────────────────── */
+      @media (max-width: 980px) {
+        .stats-grid { grid-template-columns: repeat(2, 1fr); }
       }
-
-      @media (max-width: 1080px) {
-        .sports-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .hero {
-          grid-template-columns: 1fr;
-        }
-
-        .hero-media {
-          position: relative;
-          inset: auto;
-          width: 100%;
-          min-height: 360px;
-          order: -1;
-        }
-
-        .sport-rail {
-          grid-template-columns: 1fr 1fr;
-        }
-      }
-
-      @media (max-width: 780px) {
+      @media (max-width: 700px) {
         .site-header {
-          grid-template-columns: 1fr auto;
+          grid-template-columns: auto auto;
           inset: 12px 12px auto;
         }
-
-        .nav {
-          display: none;
-        }
-
-        .hero {
-          padding-top: 96px;
-        }
-
-        .hero-media img {
-          min-height: 330px;
-        }
-
-        .section-head,
-        .club-panel,
-        .sport-rail,
-        .event-row {
-          grid-template-columns: 1fr;
-        }
-
-        .sports-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .sport-card {
-          min-height: 330px;
-        }
-
-        footer {
-          flex-direction: column;
-        }
+        .nav { display: none; }
+        .event-row { grid-template-columns: 1fr auto; }
+        .event-date { display: none; }
+        footer { flex-direction: column; text-align: center; }
       }
-
       @media (max-width: 480px) {
-        .header-cta {
-          display: none;
-        }
-
-        h1 {
-          font-size: clamp(48px, 17vw, 78px);
-        }
-
-        .hero-actions .button {
-          width: 100%;
+        .header-cta { display: none; }
+        .stats-grid { grid-template-columns: 1fr 1fr; }
+        .sport-row-right { display: none; }
+        .join-panel { padding: 36px 24px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 1ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 1ms !important;
+          scroll-behavior: auto !important;
         }
       }
     </style>
   </head>
   <body>
+
+    <!-- ── Loader ── -->
+    <div id="loader" role="status" aria-label="読み込み中">
+      <div class="loader-letters" aria-hidden="true">
+        <span>A</span><span>S</span><span>S</span><span>I</span><span>E</span><span>S</span>
+      </div>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar"></div>
+      </div>
+    </div>
+
+    <!-- ── Header ── -->
     <header class="site-header">
       <a class="brand" href="#">
         <span class="brand-mark" aria-hidden="true"></span>
-        ASSIES Clubhouse
+        ASSIES
       </a>
       <nav class="nav" aria-label="メインナビゲーション">
-        <a href="#about">About</a>
         <a href="#sports">Sports</a>
         <a href="#schedule">Schedule</a>
         <a href="#join">Join</a>
@@ -727,219 +751,262 @@
     </header>
 
     <main>
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="kicker"><span class="pulse"></span> Urban sports community</p>
-          <h1>Move as<br />ASSIES.</h1>
-          <p class="lead">
-            フットサル、野球、マラソン、ゴルフ、ダイエット。
-            競技も目的も違うメンバーが、ひとつのクラブハウスに集まる。
-            アッシーズは、熱量をスマートに楽しむスポーツコミュニティです。
-          </p>
-          <div class="hero-actions">
-            <a class="button" href="#sports">サークルを見る</a>
-            <a class="button secondary" href="#about">クラブを知る</a>
-          </div>
-        </div>
 
-        <div class="hero-media" aria-hidden="true">
+      <!-- ── Hero ── -->
+      <section class="hero">
+        <div class="hero-bg" aria-hidden="true">
           <img
-            src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1800&q=82"
+            src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=2200&q=85"
             alt=""
+            loading="eager"
           />
         </div>
 
-        <aside class="sport-rail" aria-label="アッシーズの活動ステータス">
-          <div class="hud-card">
-            <div class="hud-top">
-              <span>CLUB STATUS</span>
-              <span>LIVE</span>
-            </div>
-            <div class="hud-grid">
-              <div class="metric">
-                <span>SPORTS</span>
-                <b>05</b>
-                <small>active circles</small>
-              </div>
-              <div class="metric">
-                <span>MOOD</span>
-                <b>HIGH</b>
-                <small>serious fun</small>
-              </div>
+        <div class="hero-content">
+          <p class="hero-kicker">
+            <span class="pulse" aria-hidden="true"></span>
+            Urban Sports Community
+          </p>
+          <h1>MOVE<br />AS&nbsp;<em>ASSIES</em>.</h1>
+          <div class="hero-sub">
+            <p class="hero-tagline">
+              フットサル、野球、マラソン、ゴルフ、ダイエット。<br />
+              競技も目的も違うメンバーが、<br />ひとつのクラブハウスに集まる。
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#sports">サークルを見る</a>
+              <a class="btn btn-ghost" href="#join">クラブに参加</a>
             </div>
           </div>
-          <div class="hud-card">
-            <div class="hud-top">
-              <span>NEXT ACTION</span>
-              <span>THIS WEEK</span>
-            </div>
-            <div class="quick-list">
-              <div class="quick-item">
-                <span class="dot"></span>
-                <span>フットサル</span>
-                <span>Open</span>
-              </div>
-              <div class="quick-item">
-                <span class="dot"></span>
-                <span>朝ラン</span>
-                <span>Open</span>
-              </div>
-              <div class="quick-item">
-                <span class="dot"></span>
-                <span>野球</span>
-                <span>Scout</span>
-              </div>
-            </div>
-          </div>
-        </aside>
+        </div>
+
+        <div class="scroll-hint" aria-hidden="true">
+          <div class="scroll-line"></div>
+          <span>Scroll</span>
+        </div>
       </section>
 
-      <section class="section reveal" id="about">
-        <div class="section-inner">
-          <div class="section-head">
-            <div>
-              <p class="label">About ASSIES</p>
-              <h2>遊びじゃない。けど、遊び心は忘れない。</h2>
-            </div>
-            <p>
-              アッシーズは、スポーツを通じて日常のテンションを上げるための母体です。
-              初心者も経験者も、勝ちたい人も健康目的の人も、自分に合う入り口から参加できます。
-            </p>
-          </div>
+      <!-- ── Marquee ── -->
+      <div class="marquee-wrap" aria-hidden="true">
+        <div class="marquee-track">
+          <span class="marquee-item"><b>Futsal</b><span class="marquee-dot"></span></span>
+          <span class="marquee-item">Baseball<span class="marquee-dot"></span></span>
+          <span class="marquee-item"><b>Running</b><span class="marquee-dot"></span></span>
+          <span class="marquee-item">Golf<span class="marquee-dot"></span></span>
+          <span class="marquee-item"><b>Diet</b><span class="marquee-dot"></span></span>
+          <span class="marquee-item">Urban Sports<span class="marquee-dot"></span></span>
+          <span class="marquee-item"><b>ASSIES</b><span class="marquee-dot"></span></span>
+          <span class="marquee-item">Clubhouse<span class="marquee-dot"></span></span>
+          <span class="marquee-item">Weekend Play<span class="marquee-dot"></span></span>
+          <span class="marquee-item"><b>Serious Fun</b><span class="marquee-dot"></span></span>
+          <!-- duplicate for seamless loop -->
+          <span class="marquee-item"><b>Futsal</b><span class="marquee-dot"></span></span>
+          <span class="marquee-item">Baseball<span class="marquee-dot"></span></span>
+          <span class="marquee-item"><b>Running</b><span class="marquee-dot"></span></span>
+          <span class="marquee-item">Golf<span class="marquee-dot"></span></span>
+          <span class="marquee-item"><b>Diet</b><span class="marquee-dot"></span></span>
+          <span class="marquee-item">Urban Sports<span class="marquee-dot"></span></span>
+          <span class="marquee-item"><b>ASSIES</b><span class="marquee-dot"></span></span>
+          <span class="marquee-item">Clubhouse<span class="marquee-dot"></span></span>
+          <span class="marquee-item">Weekend Play<span class="marquee-dot"></span></span>
+          <span class="marquee-item"><b>Serious Fun</b><span class="marquee-dot"></span></span>
+        </div>
+      </div>
 
-          <div class="club-panel">
+      <!-- ── Manifesto ── -->
+      <section class="manifesto">
+        <p class="manifesto-quote">
+          遊びじゃない。<br />けど、<em>遊び心</em>は<br />忘れない。
+        </p>
+        <p class="manifesto-sub">
+          アッシーズは、スポーツを通じて日常のテンションを上げるための母体。<br />
+          初心者も経験者も、勝ちたい人も健康目的の人も、<br />
+          自分に合う入り口から参加できる。
+        </p>
+      </section>
+
+      <!-- ── Sports ── -->
+      <section class="sports-section" id="sports">
+        <div class="sports-headline">
+          <h2>Choose<br />your field.</h2>
+          <span class="count-tag">05 Circles</span>
+        </div>
+
+        <a class="sport-row" href="futsal.html" style="--sport-color: var(--acid)">
+          <div class="sport-row-bg" aria-hidden="true">
+            <img src="https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=1600&q=82" alt="" loading="lazy" />
+          </div>
+          <span class="sport-num">01</span>
+          <span class="sport-name">Futsal</span>
+          <div class="sport-row-right">
+            <span class="sport-tag">Speed · Open</span>
+            <span class="sport-arrow">→</span>
+          </div>
+        </a>
+
+        <a class="sport-row" href="baseball.html" style="--sport-color: var(--coral)">
+          <div class="sport-row-bg" aria-hidden="true">
+            <img src="https://images.unsplash.com/photo-1508344928928-7165b67de128?auto=format&fit=crop&w=1600&q=82" alt="" loading="lazy" />
+          </div>
+          <span class="sport-num">02</span>
+          <span class="sport-name">Baseball</span>
+          <div class="sport-row-right">
+            <span class="sport-tag">Team · Scout</span>
+            <span class="sport-arrow">→</span>
+          </div>
+        </a>
+
+        <a class="sport-row" href="running.html" style="--sport-color: var(--cyan)">
+          <div class="sport-row-bg" aria-hidden="true">
+            <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1600&q=82" alt="" loading="lazy" />
+          </div>
+          <span class="sport-num">03</span>
+          <span class="sport-name">Running</span>
+          <div class="sport-row-right">
+            <span class="sport-tag">Endurance · Open</span>
+            <span class="sport-arrow">→</span>
+          </div>
+        </a>
+
+        <a class="sport-row" href="golf.html" style="--sport-color: var(--violet)">
+          <div class="sport-row-bg" aria-hidden="true">
+            <img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=1600&q=82" alt="" loading="lazy" />
+          </div>
+          <span class="sport-num">04</span>
+          <span class="sport-name">Golf</span>
+          <div class="sport-row-right">
+            <span class="sport-tag">Focus · Join</span>
+            <span class="sport-arrow">→</span>
+          </div>
+        </a>
+
+        <a class="sport-row" href="diet.html" style="--sport-color: var(--amber)">
+          <div class="sport-row-bg" aria-hidden="true">
+            <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1600&q=82" alt="" loading="lazy" />
+          </div>
+          <span class="sport-num">05</span>
+          <span class="sport-name">Diet</span>
+          <div class="sport-row-right">
+            <span class="sport-tag">Habit · Start</span>
+            <span class="sport-arrow">→</span>
+          </div>
+        </a>
+      </section>
+
+      <!-- ── Stats ── -->
+      <section class="stats-section">
+        <div class="stats-grid">
+          <div class="stat-cell">
+            <b class="stat-num" data-target="5">0</b>
+            <span class="stat-label">Active Circles</span>
+          </div>
+          <div class="stat-cell">
+            <b class="stat-num" data-target="7">0</b>
+            <span class="stat-label">Days a Week</span>
+          </div>
+          <div class="stat-cell">
+            <b class="stat-num" data-target="100" data-suffix="%">0</b>
+            <span class="stat-label">Beginner Welcome</span>
+          </div>
+          <div class="stat-cell">
+            <b class="stat-num" data-target="1">0</b>
+            <span class="stat-label">Community</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Schedule ── -->
+      <section class="schedule-section" id="schedule">
+        <span class="section-eyebrow">Live Schedule</span>
+        <h2 class="section-title">次の予定が、<br />すぐ見える。</h2>
+        <div class="timeline">
+          <div class="event-row">
+            <div class="event-date">Sat&nbsp;/&nbsp;19:00</div>
+            <div class="event-name">週末フットサルセッション</div>
+            <div class="event-badge">参加受付中</div>
+          </div>
+          <div class="event-row">
+            <div class="event-date">Sun&nbsp;/&nbsp;07:30</div>
+            <div class="event-name">朝ラン 5km チャレンジ</div>
+            <div class="event-badge">初参加歓迎</div>
+          </div>
+          <div class="event-row">
+            <div class="event-date">Next&nbsp;Month</div>
+            <div class="event-name">ゴルフ練習会 &amp; ラウンド企画</div>
+            <div class="event-badge pending">調整中</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Join ── -->
+      <section class="join-section" id="join">
+        <div class="join-panel">
+          <div class="join-bg" aria-hidden="true">
             <img
-              src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1400&q=82"
-              alt="スポーツコートでプレーに向かうメンバー"
+              src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1800&q=80"
+              alt=""
+              loading="lazy"
             />
-            <div class="club-copy">
-              <h2>ASSIES Clubhouse</h2>
-              <p>
-                種目ごとに分かれながら、クラブとしてはひとつ。
-                参加予定、募集、活動レポートをまとめ、メンバーが次のアクションを選びやすい場所を目指します。
-              </p>
-              <div class="tags" aria-label="クラブの特徴">
-                <span class="tag">Weekend sports</span>
-                <span class="tag">Beginner friendly</span>
-                <span class="tag">Social training</span>
-                <span class="tag">City league mood</span>
-              </div>
-            </div>
           </div>
-        </div>
-      </section>
-
-      <section class="section reveal" id="sports">
-        <div class="section-inner">
-          <div class="section-head">
-            <div>
-              <p class="label">Choose your circle</p>
-              <h2>今日は、どのフィールドへ？</h2>
-            </div>
+          <div class="join-content">
+            <h2>運動したい気持ちを、<br />予定に変えよう。</h2>
             <p>
-              気分、予定、体力に合わせて選べる5つの活動。ひとつに絞らなくても、横断して楽しめます。
+              まずは気になる種目をひとつ選ぶだけ。<br />
+              経験値より、参加してみる一歩を歓迎します。
             </p>
-          </div>
-
-          <div class="sports-grid">
-            <a class="sport-card" href="futsal.html">
-              <img
-                src="https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=900&q=82"
-                alt="フットサルボールとコート"
-              />
-              <h3>Futsal</h3>
-              <p>短時間で熱くなれる、アッシーズの入口。</p>
-              <div class="card-meta"><span>Speed</span><span>Open</span></div>
-            </a>
-            <a class="sport-card" href="baseball.html">
-              <img
-                src="https://images.unsplash.com/photo-1508344928928-7165b67de128?auto=format&fit=crop&w=900&q=82"
-                alt="野球グラウンド"
-              />
-              <h3>Baseball</h3>
-              <p>試合、練習、キャッチボールまで幅広く。</p>
-              <div class="card-meta"><span>Team</span><span>Scout</span></div>
-            </a>
-            <a class="sport-card" href="running.html">
-              <img
-                src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=900&q=82"
-                alt="ランニング中の足元"
-              />
-              <h3>Running</h3>
-              <p>朝ランから大会参加まで、自分のペースで。</p>
-              <div class="card-meta"><span>Endurance</span><span>Open</span></div>
-            </a>
-            <a class="sport-card" href="golf.html">
-              <img
-                src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=900&q=82"
-                alt="ゴルフコース"
-              />
-              <h3>Golf</h3>
-              <p>集中と会話を楽しむ、大人のラウンド。</p>
-              <div class="card-meta"><span>Focus</span><span>Join</span></div>
-            </a>
-            <a class="sport-card" href="diet.html">
-              <img
-                src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=82"
-                alt="トレーニングスタジオ"
-              />
-              <h3>Diet</h3>
-              <p>続けることをゲーム化する健康サークル。</p>
-              <div class="card-meta"><span>Habit</span><span>Start</span></div>
-            </a>
+            <a class="btn btn-primary" href="mailto:hello@example.com">参加について聞く</a>
           </div>
         </div>
       </section>
 
-      <section class="section reveal" id="schedule">
-        <div class="section-inner">
-          <div class="section-head">
-            <div>
-              <p class="label">Live schedule</p>
-              <h2>次の予定が、すぐ見える。</h2>
-            </div>
-            <p>
-              公開後はここに実際の開催日、場所、募集状況を入れていく想定です。
-            </p>
-          </div>
-
-          <div class="timeline">
-            <div class="event-row">
-              <div class="event-date">Sat / 19:00</div>
-              <div class="event-title">週末フットサルセッション</div>
-              <div class="event-status">参加受付中</div>
-            </div>
-            <div class="event-row">
-              <div class="event-date">Sun / 07:30</div>
-              <div class="event-title">朝ラン 5km チャレンジ</div>
-              <div class="event-status">初参加歓迎</div>
-            </div>
-            <div class="event-row">
-              <div class="event-date">Next Month</div>
-              <div class="event-title">ゴルフ練習会 & ラウンド企画</div>
-              <div class="event-status">調整中</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section join reveal" id="join">
-        <div class="section-inner">
-          <div class="join-panel">
-            <p class="label">Join ASSIES</p>
-            <h2>運動したい気持ちを、予定に変えよう。</h2>
-            <p>
-              まずは気になる種目をひとつ選ぶだけ。経験値より、参加してみる一歩を歓迎します。
-            </p>
-            <a class="button" href="mailto:hello@example.com">参加について聞く</a>
-          </div>
-        </div>
-      </section>
     </main>
 
+    <!-- ── Footer ── -->
     <footer>
-      <span>&copy; <a href="members.html" aria-label="メンバーデータを見る">2026 ASSIES Clubhouse</a></span>
-      <span>Futsal / Baseball / Running / Golf / Diet</span>
+      <span>&copy; 2026 ASSIES Clubhouse</span>
+      <nav class="footer-sports" aria-label="種目リンク">
+        <a href="futsal.html">Futsal</a>
+        <a href="baseball.html">Baseball</a>
+        <a href="running.html">Running</a>
+        <a href="golf.html">Golf</a>
+        <a href="diet.html">Diet</a>
+      </nav>
     </footer>
+
+    <script>
+      // ── Loader dismiss ──────────────────────────────
+      const loader = document.getElementById('loader');
+      const dismiss = () => loader.classList.add('hidden');
+      if (document.readyState === 'complete') {
+        setTimeout(dismiss, 2000);
+      } else {
+        window.addEventListener('load', () => setTimeout(dismiss, 2000));
+      }
+
+      // ── Stat counters ───────────────────────────────
+      const counterEls = document.querySelectorAll('.stat-num[data-target]');
+      const counterObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const target = +el.dataset.target;
+          const suffix = el.dataset.suffix || '';
+          let current = 0;
+          const duration = 1200;
+          const startTime = performance.now();
+          const tick = (now) => {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            current = Math.round(ease * target);
+            el.textContent = current + suffix;
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+          counterObs.unobserve(el);
+        });
+      }, { threshold: 0.4 });
+      counterEls.forEach(el => counterObs.observe(el));
+    </script>
+
   </body>
 </html>
