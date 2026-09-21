@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ASSY’S Clubhouse — Urban Sports Community</title>
     <meta name="description" content="フットサル、野球、マラソン、ゴルフ、ダイエット。競技も目的も違うメンバーが、ひとつのクラブハウスに集まる都市型スポーツコミュニティ。" />
+    <link rel="icon" href="logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet" />
@@ -121,11 +122,10 @@
         letter-spacing: 0.02em;
       }
       .brand-mark {
-        width: 30px;
-        aspect-ratio: 1;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--acid), var(--cyan) 54%, var(--violet));
-        box-shadow: inset 0 0 0 5px rgba(0, 0, 0, 0.35);
+        height: 36px;
+        width: auto;
+        border-radius: 8px;
+        object-fit: contain;
         flex-shrink: 0;
       }
       .nav {
@@ -664,7 +664,7 @@
     <!-- ── Header ── -->
     <header class="site-header">
       <a class="brand" href="#">
-        <span class="brand-mark" aria-hidden="true"></span>
+        <img class="brand-mark" src="logo.png" alt="ASSY’S" />
         ASSY’S
       </a>
       <nav class="nav" aria-label="メインナビゲーション">
