@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ASSIES Clubhouse — Urban Sports Community</title>
+    <title>ASSY’S Clubhouse — Urban Sports Community</title>
     <meta name="description" content="フットサル、野球、マラソン、ゴルフ、ダイエット。競技も目的も違うメンバーが、ひとつのクラブハウスに集まる都市型スポーツコミュニティ。" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -142,23 +142,6 @@
         transition: color 160ms, background 160ms;
       }
       .nav a:hover { color: var(--ink); background: rgba(255, 255, 255, 0.08); }
-      .header-cta {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 38px;
-        padding: 8px 16px;
-        border-radius: 999px;
-        background: var(--acid);
-        color: #070709;
-        font-weight: 900;
-        font-size: 13px;
-        transition: transform 160ms, box-shadow 160ms;
-      }
-      .header-cta:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 0 28px rgba(200, 255, 61, 0.44);
-      }
 
       /* ── Hero ──────────────────────────────────────── */
       .hero {
@@ -515,7 +498,7 @@
       }
       .stats-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         background: var(--line);
         gap: 1px;
         border: 1px solid var(--line);
@@ -611,62 +594,6 @@
         color: var(--muted);
       }
 
-      /* ── Join ──────────────────────────────────────── */
-      .join-section {
-        padding: clamp(60px, 9vw, 120px) clamp(20px, 6vw, 80px);
-      }
-      .join-panel {
-        position: relative;
-        min-height: clamp(380px, 52vw, 580px);
-        display: grid;
-        align-content: center;
-        padding: clamp(44px, 7vw, 88px);
-        border-radius: 36px;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        opacity: 0;
-        animation: fade-up 1s ease forwards;
-        animation-timeline: view();
-        animation-range: entry 5% cover 40%;
-      }
-      .join-bg {
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-      }
-      .join-bg img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0.22;
-        filter: saturate(0.5);
-      }
-      .join-bg::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-          radial-gradient(ellipse at 75% 50%, rgba(200, 255, 61, 0.2), transparent 55%),
-          linear-gradient(135deg, rgba(7, 7, 9, 0.82), rgba(7, 7, 9, 0.44));
-      }
-      .join-content {
-        position: relative;
-        z-index: 1;
-        max-width: 780px;
-      }
-      .join-content h2 {
-        font-size: clamp(42px, 7.5vw, 96px);
-        font-weight: 900;
-        line-height: 0.94;
-        letter-spacing: -0.04em;
-      }
-      .join-content p {
-        margin: 24px 0 38px;
-        font-size: clamp(15px, 1.9vw, 20px);
-        font-weight: 700;
-        color: var(--muted);
-        line-height: 1.72;
-      }
 
       /* ── Footer ────────────────────────────────────── */
       footer {
@@ -696,7 +623,7 @@
 
       /* ── Responsive ────────────────────────────────── */
       @media (max-width: 980px) {
-        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .stats-grid { grid-template-columns: repeat(3, 1fr); }
       }
       @media (max-width: 700px) {
         .site-header {
@@ -709,10 +636,8 @@
         footer { flex-direction: column; text-align: center; }
       }
       @media (max-width: 480px) {
-        .header-cta { display: none; }
         .stats-grid { grid-template-columns: 1fr 1fr; }
         .sport-row-right { display: none; }
-        .join-panel { padding: 36px 24px; }
       }
       @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after {
@@ -740,14 +665,12 @@
     <header class="site-header">
       <a class="brand" href="#">
         <span class="brand-mark" aria-hidden="true"></span>
-        ASSIES
+        ASSY’S
       </a>
       <nav class="nav" aria-label="メインナビゲーション">
         <a href="#sports">Sports</a>
         <a href="#schedule">Schedule</a>
-        <a href="#join">Join</a>
       </nav>
-      <a class="header-cta" href="#join">Entry</a>
     </header>
 
     <main>
@@ -767,7 +690,7 @@
             <span class="pulse" aria-hidden="true"></span>
             Urban Sports Community
           </p>
-          <h1>MOVE<br />AS&nbsp;<em>ASSIES</em>.</h1>
+          <h1>MOVE<br />AS&nbsp;<em>ASSY’S</em>.</h1>
           <div class="hero-sub">
             <p class="hero-tagline">
               フットサル、野球、マラソン、ゴルフ、ダイエット。<br />
@@ -775,7 +698,6 @@
             </p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="#sports">サークルを見る</a>
-              <a class="btn btn-ghost" href="#join">クラブに参加</a>
             </div>
           </div>
         </div>
@@ -795,7 +717,7 @@
           <span class="marquee-item">Golf<span class="marquee-dot"></span></span>
           <span class="marquee-item"><b>Diet</b><span class="marquee-dot"></span></span>
           <span class="marquee-item">Urban Sports<span class="marquee-dot"></span></span>
-          <span class="marquee-item"><b>ASSIES</b><span class="marquee-dot"></span></span>
+          <span class="marquee-item"><b>ASSY’S</b><span class="marquee-dot"></span></span>
           <span class="marquee-item">Clubhouse<span class="marquee-dot"></span></span>
           <span class="marquee-item">Weekend Play<span class="marquee-dot"></span></span>
           <span class="marquee-item"><b>Serious Fun</b><span class="marquee-dot"></span></span>
@@ -806,7 +728,7 @@
           <span class="marquee-item">Golf<span class="marquee-dot"></span></span>
           <span class="marquee-item"><b>Diet</b><span class="marquee-dot"></span></span>
           <span class="marquee-item">Urban Sports<span class="marquee-dot"></span></span>
-          <span class="marquee-item"><b>ASSIES</b><span class="marquee-dot"></span></span>
+          <span class="marquee-item"><b>ASSY’S</b><span class="marquee-dot"></span></span>
           <span class="marquee-item">Clubhouse<span class="marquee-dot"></span></span>
           <span class="marquee-item">Weekend Play<span class="marquee-dot"></span></span>
           <span class="marquee-item"><b>Serious Fun</b><span class="marquee-dot"></span></span>
@@ -904,10 +826,7 @@
             <b class="stat-num" data-target="7">0</b>
             <span class="stat-label">Days a Week</span>
           </div>
-          <div class="stat-cell">
-            <b class="stat-num" data-target="100" data-suffix="%">0</b>
-            <span class="stat-label">Beginner Welcome</span>
-          </div>
+
           <div class="stat-cell">
             <b class="stat-num" data-target="1">0</b>
             <span class="stat-label">Community</span>
@@ -923,12 +842,12 @@
           <div class="event-row">
             <div class="event-date">Sat&nbsp;/&nbsp;19:00</div>
             <div class="event-name">週末フットサルセッション</div>
-            <div class="event-badge">参加受付中</div>
+            <div class="event-badge">定例開催</div>
           </div>
           <div class="event-row">
             <div class="event-date">Sun&nbsp;/&nbsp;07:30</div>
             <div class="event-name">朝ラン 5km チャレンジ</div>
-            <div class="event-badge">初参加歓迎</div>
+            <div class="event-badge">月例企画</div>
           </div>
           <div class="event-row">
             <div class="event-date">Next&nbsp;Month</div>
@@ -938,32 +857,12 @@
         </div>
       </section>
 
-      <!-- ── Join ── -->
-      <section class="join-section" id="join">
-        <div class="join-panel">
-          <div class="join-bg" aria-hidden="true">
-            <img
-              src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1800&q=80"
-              alt=""
-              loading="lazy"
-            />
-          </div>
-          <div class="join-content">
-            <h2>運動したい気持ちを、<br />予定に変えよう。</h2>
-            <p>
-              まずは気になる種目をひとつ選ぶだけ。<br />
-              経験値より、参加してみる一歩を歓迎します。
-            </p>
-            <a class="btn btn-primary" href="mailto:hello@example.com">参加について聞く</a>
-          </div>
-        </div>
-      </section>
 
     </main>
 
     <!-- ── Footer ── -->
     <footer>
-      <span>&copy; 2026 ASSIES Clubhouse</span>
+      <span>&copy; 2026 ASSY’S Clubhouse</span>
       <nav class="footer-sports" aria-label="種目リンク">
         <a href="futsal.html">Futsal</a>
         <a href="baseball.html">Baseball</a>
